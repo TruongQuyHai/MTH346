@@ -65,6 +65,8 @@ document.getElementById("chinese").addEventListener("submit", function (e) {
   }
   content += "</p>";
 
+
+
   for (let i = 0; i < length; i++) {
     let count = 1;
     while (true) {
@@ -116,6 +118,19 @@ document.getElementById("chinese").addEventListener("submit", function (e) {
   sol.innerHTML = content;
 });
 
+function gcd_two_numbers(x, y) {
+  if ((typeof x !== 'number') || (typeof y !== 'number')) 
+    return false;
+  x = Math.abs(x);
+  y = Math.abs(y);
+  while(y) {
+    var t = y;
+    y = x % y;
+    x = t;
+  }
+  return x;
+}
+
 document.getElementById("multi-form").addEventListener("submit", function (e) {
   e.preventDefault();
   const z = +document.getElementById("z").value;
@@ -141,20 +156,32 @@ document.getElementById("multi-form").addEventListener("submit", function (e) {
   let tbodyContent = "";
 
   let elements = [];
-  for (let i = 1; i < z; i++) {
-    tbodyContent += `<tr id="row-${i}"><td>${i}<sup>i</sup></td>`;
 
+  // tìm z*
+  const z_star = [];
+
+  for (let i = 1; i < z; i++) {
+    if (gcd_two_numbers(i, z) === 1) {
+      z_star.push(i);
+    }
+  }
+
+  console.log(z_star);
+
+  for (let i = 1; i <= z_star.length; i++) {
+    tbodyContent += `<tr id="row-${i}"><td>${z_star[i - 1]}<sup>i</sup></td>`;
+    if (i === 4) debugger;
     let oldMod;
     for (let j = 0; j < divisors.length; j++) {
-      if (j === 0) oldMod = i % 19;
+      if (j === 0) oldMod = i % z;
       else if (oldMod === 1 || oldMod === -1) {
         oldMod = -1;
         tbodyContent += `<td>x</td>`;
         break;
       } else {
-        // oldMod = (oldMod * i ** (divisors[j] - divisors[j - 1])) % 19;
+        // oldMod = (oldMod * i ** (divisors[j] - divisors[j - 1])) % z;
         for (let k = 0; k < divisors[j] - divisors[j - 1]; k++) {
-          oldMod = (oldMod * i) % 19;
+          oldMod = (oldMod * i) % z;
         }
       }
       if (j === divisors.length - 1 && oldMod === 1) {
