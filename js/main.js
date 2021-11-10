@@ -22,7 +22,7 @@ document.getElementById("chinese-n").addEventListener("input", (e) => {
     `;
   }
 
-  content += `<button class="btn btn-success mb-3 d-none" type="submit">Process</button>`;
+  content += `<button class="btn btn-success mb-3" type="submit">Calculate</button>`;
 
   document.getElementById("chinese").innerHTML = content;
 });
